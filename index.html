@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>Movie Admin — Now Showing</title>
+
+<link
+  rel="preconnect"
+  href="https://fonts.googleapis.com"
+>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+  rel="stylesheet"
+>
+
+<style>
+
+:root{
+  --bg:#0B0F19;
+  --surface:#131A2C;
+  --surface-raised:#1A2338;
+  --gold:#E8B34C;
+  --red:#C1443C;
+  --text:#F1EDE4;
+  --text-muted:#8A93A8;
+  --hairline:#2A3450;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Work Sans',sans-serif;
+  line-height:1.5;
+  min-height:100vh;
+}
+
+.wrap{
+  max-width:1080px;
+  margin:auto;
+  padding:0 24px 80px;
+}
+
+.marquee{
+  position:relative;
+  padding:56px 24px 40px;
+  text-align:center;
+  border-bottom:1px solid var(--hairline);
+  overflow:hidden;
+}
+
+.marquee::before,
+.marquee::after{
+  content:'';
+  position:absolute;
+  left:0;
+  right:0;
+  height:1px;
+  background:repeating-linear-gradient(
+    90deg,
+    var(--gold) 0 6px,
+    transparent 6px 16px
+  );
+  opacity:.55;
+}
+
+.marquee::before{
+  top:14px;
+}
+
+.marquee::after{
+  bottom:14px;
+}
+
+.bulbs{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.bulbs span{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--gold);
+  box-shadow:
+    0 0 6px 1px rgba(232,179,76,.7);
+}
+
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  letter-spacing:.28em;
+  font-size:11px;
+  color:var(--gold);
+  text-transform:uppercase;
+  margin:0 0 10px;
+}
+
+h1{
+  font-family:'Big Shoulders Display',sans-serif;
+  font-weight:900;
+  font-size:clamp(42px,9vw,84px);
+  margin:0;
+  text-transform:uppercase;
+  background:linear-gradient(
+    180deg,
+    #fff 0%,
+    var(--gold) 100%
+  );
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  line-height:.95;
+}
+
+.marquee p{
+  color:var(--text-muted);
+  max-width:500px;
+  margin:14px auto 0;
+}
+
+.nav{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  padding:24px 0;
+  flex-wrap:wrap;
+}
+
+.nav a{
+  text-decoration:none;
+  color:var(--text-muted);
+  border:1px solid var(--hairline);
+  padding:9px 16px;
+  border-radius:6px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+}
+
+.nav a:hover,
+.nav a.active{
+  color:#161008;
+  background:var(--gold);
+  border-color:var(--gold);
+}
+
+.panel{
+  background:var(--surface);
+  border:1px solid var(--hairline);
+  border-radius:10px;
+  padding:24px;
+  margin-bottom:30px;
+}
+
+.panel h2{
+  font-family:'Big Shoulders Display',sans-serif;
+  font-size:28px;
+  color:var(--gold);
+  text-transform:uppercase;
+  margin:0 0 20px;
+}
+
+.grid-2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.field{
+  margin-bottom:15px;
+}
+
+.field label{
+  display:block;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  color:var(--text-muted);
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  background:var(--surface-raised);
+  border:1px solid var(--hairline);
+  border-radius:6px;
+  padding:11px 12px;
+  color:var(--text);
+  font-family:'Work Sans',sans-serif;
+  font-size:14px;
+}
+
+.field input[type="file"]{
+  cursor:pointer;
+}
+
+.field textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
+.file-note{
+  color:var(--text-muted);
+  font-size:12px;
+  margin-top:6px;
+}
+
+.video-note{
+  color:var(--gold);
+  font-size:12px;
+  margin-top:6px;
+}
+
+.actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:18px;
+}
+
+button{
+  font-family:'IBM Plex Mono',monospace;
+  cursor:pointer;
+}
+
+.post-btn{
+  background:var(--red);
+  color:white;
+  border:none;
+  padding:11px 20px;
+  border-radius:6px;
+  text-transform:uppercase;
+  font-size:13px;
+}
+
+.post-btn:hover{
+  filter:brightness(1.1);
+}
+
+.post-btn:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+.clear-btn{
+  background:transparent;
+  color:var(--text-muted);
+  border:1px solid var(--hairline);
+  padding:10px 18px;
+  border-radius:6px;
+}
+
+.clear-btn:hover{
+  color:white;
+  border-color:var(--text-muted);
+}
+
+.message{
+  padding:15px;
+  border-radius:6px;
+  margin-bottom:20px;
+  display:none;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+}
+
+.message.success{
+  display:block;
+  background:rgba(232,179,76,.12);
+  border:1px solid var(--gold);
+  color:var(--gold);
+}
+
+.message.error{
+  display:block;
+  background:rgba(193,68,60,.12);
+  border:1px solid var(--red);
+  color:#E88A83;
+}
+
+.movie-list{
+  display:grid;
+  grid-template-columns:
+    repeat(auto-fill,minmax(250px,1fr));
+  gap:20px;
+}
+
+.movie-card{
+  background:var(--surface);
+  border:1px solid var(--hairline);
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.poster{
+  width:100%;
+  aspect-ratio:2/3;
+  object-fit:cover;
+  display:block;
+  background:var(--surface-raised);
+}
+
+.poster-fallback{
+  aspect-ratio:2/3;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    linear-gradient(
+      160deg,
+      var(--surface-raised),
+      var(--bg)
+    );
+  color:var(--hairline);
+  font-family:'Big Shoulders Display',sans-serif;
+  font-size:22px;
+  text-transform:uppercase;
+  text-align:center;
+  padding:20px;
+}
+
+.movie-info{
+  padding:16px;
+}
+
+.movie-info h3{
+  font-family:'Big Shoulders Display',sans-serif;
+  text-transform:uppercase;
+  font-size:22px;
+  margin:0 0 6px;
+}
+
+.meta{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  color:var(--gold);
+  margin-bottom:10px;
+}
+
+.synopsis{
+  color:var(--text-muted);
+  font-size:13px;
+}
+
+.video-status{
+  margin-top:12px;
+  color:var(--gold);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  text-transform:uppercase;
+}
+
+.remove{
+  width:100%;
+  background:transparent;
+  border:1px solid var(--hairline);
+  color:var(--text-muted);
+  padding:9px;
+  border-radius:5px;
+  margin-top:12px;
+}
+
+.remove:hover{
+  color:#E88A83;
+  border-color:var(--red);
+}
+
+.empty{
+  text-align:center;
+  color:var(--text-muted);
+  padding:40px;
+  font-family:'IBM Plex Mono',monospace;
+}
+
+@media(max-width:600px){
+
+  .grid-2{
+    grid-template-columns:1fr;
+  }
+
+  .wrap{
+    padding-left:14px;
+    padding-right:14px;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header class="marquee">
+
+  <div class="bulbs">
+
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+
+  </div>
+
+  <p class="eyebrow">
+    Administrator
+  </p>
+
+  <h1>
+    Movie Manager
+  </h1>
+
+  <p>
+    Add new movies to your release collection.
+  </p>
+
+</header>
+
+<div class="wrap">
+
+  <nav class="nav">
+
+    <a
+      href="index.html"
+      class="active"
+    >
+      Admin
+    </a>
+
+    <a href="new-releases.html">
+      New Releases
+    </a>
+
+  </nav>
+
+
+  <div
+    id="message"
+    class="message"
+  ></div>
+
+
+  <!-- ADD MOVIE -->
+
+  <section class="panel">
+
+    <h2>
+      Post a New Release
+    </h2>
+
+
+    <form id="movieForm">
+
+
+      <div class="grid-2">
+
+        <div class="field">
+
+          <label for="title">
+            Movie Title
+          </label>
+
+          <input
+            id="title"
+            type="text"
+            placeholder="e.g. The Lost Boy"
+            required
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="genre">
+            Genre
+          </label>
+
+          <select id="genre">
+
+            <option>Action</option>
+            <option>Drama</option>
+            <option>Comedy</option>
+            <option>Horror</option>
+            <option>Sci-Fi</option>
+            <option>Thriller</option>
+            <option>Animation</option>
+            <option>Documentary</option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <div class="grid-2">
+
+        <div class="field">
+
+          <label for="releaseDate">
+            Release Date
+          </label>
+
+          <input
+            id="releaseDate"
+            type="date"
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="runtime">
+            Runtime (minutes)
+          </label>
+
+          <input
+            id="runtime"
+            type="number"
+            min="1"
+            placeholder="128"
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="grid-2">
+
+        <div class="field">
+
+          <label for="rating">
+            Rating / 10
+          </label>
+
+          <input
+            id="rating"
+            type="number"
+            min="0"
+            max="10"
+            step="0.1"
+            placeholder="7.5"
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="poster">
+            Movie Poster
+          </label>
+
+          <input
+            id="poster"
+            type="file"
+            accept="image/*"
+          >
+
+          <div class="file-note">
+            Select the movie poster from your PC.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- VIDEO -->
+
+      <div class="field">
+
+        <label for="video">
+          Movie Video
+        </label>
+
+        <input
+          id="video"
+          type="file"
+          accept="video/mp4,video/webm,video/ogg"
+        >
+
+        <div class="video-note">
+          Select your MP4, WebM or OGG video.
+          The video is stored separately from the poster.
+        </div>
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="synopsis">
+          Synopsis
+        </label>
+
+        <textarea
+          id="synopsis"
+          placeholder="Write a short description of the movie..."
+        ></textarea>
+
+      </div>
+
+
+      <div class="actions">
+
+        <button
+          type="button"
+          class="clear-btn"
+          id="clearBtn"
+        >
+          Clear
+        </button>
+
+
+        <button
+          type="submit"
+          class="post-btn"
+          id="publishBtn"
+        >
+          Publish Movie
+        </button>
+
+      </div>
+
+
+    </form>
+
+  </section>
+
+
+  <!-- EXISTING MOVIES -->
+
+  <section class="panel">
+
+    <h2>
+      Your Movies
+    </h2>
+
+    <div
+      id="movieList"
+      class="movie-list"
+    ></div>
+
+  </section>
+
+</div>
+
+
+<script>
+
+/*
+==================================================
+MOVIE STORAGE
+==================================================
+*/
+
+const STORAGE_KEY =
+  "movie_release_collection";
+
+
+/*
+==================================================
+VIDEO DATABASE
+==================================================
+*/
+
+const DB_NAME =
+  "MovieVideoDatabase";
+
+const DB_VERSION = 1;
+
+const VIDEO_STORE =
+  "videos";
+
+
+/*
+==================================================
+ELEMENTS
+==================================================
+*/
+
+const form =
+  document.getElementById(
+    "movieForm"
+  );
+
+const movieList =
+  document.getElementById(
+    "movieList"
+  );
+
+const message =
+  document.getElementById(
+    "message"
+  );
+
+const posterInput =
+  document.getElementById(
+    "poster"
+  );
+
+const videoInput =
+  document.getElementById(
+    "video"
+  );
+
+const publishBtn =
+  document.getElementById(
+    "publishBtn"
+  );
+
+
+/*
+==================================================
+OPEN INDEXEDDB
+==================================================
+*/
+
+function openVideoDB(){
+
+  return new Promise(
+    (resolve,reject) => {
+
+      const request =
+        indexedDB.open(
+          DB_NAME,
+          DB_VERSION
+        );
+
+
+      request.onupgradeneeded =
+        event => {
+
+          const db =
+            event.target.result;
+
+
+          if(
+            !db.objectStoreNames
+              .contains(VIDEO_STORE)
+          ){
+
+            db.createObjectStore(
+              VIDEO_STORE,
+              {
+                keyPath:"id"
+              }
+            );
+
+          }
+
+        };
+
+
+      request.onsuccess =
+        event => {
+
+          resolve(
+            event.target.result
+          );
+
+        };
+
+
+      request.onerror =
+        () => {
+
+          reject(
+            request.error
+          );
+
+        };
+
+    }
+  );
+
+}
+
+
+/*
+==================================================
+SAVE VIDEO
+==================================================
+*/
+
+async function saveVideo(
+  movieId,
+  videoFile
+){
+
+  if(!videoFile){
+    return;
+  }
+
+
+  const db =
+    await openVideoDB();
+
+
+  return new Promise(
+    (resolve,reject) => {
+
+      const transaction =
+        db.transaction(
+          VIDEO_STORE,
+          "readwrite"
+        );
+
+
+      const store =
+        transaction.objectStore(
+          VIDEO_STORE
+        );
+
+
+      store.put({
+
+        id:movieId,
+
+        file:videoFile
+
+      });
+
+
+      transaction.oncomplete =
+        () => {
+
+          db.close();
+
+          resolve();
+
+        };
+
+
+      transaction.onerror =
+        () => {
+
+          db.close();
+
+          reject(
+            transaction.error
+          );
+
+        };
+
+    }
+  );
+
+}
+
+
+/*
+==================================================
+DELETE VIDEO
+==================================================
+*/
+
+async function deleteVideo(
+  movieId
+){
+
+  try{
+
+    const db =
+      await openVideoDB();
+
+
+    return new Promise(
+      (resolve,reject) => {
+
+        const transaction =
+          db.transaction(
+            VIDEO_STORE,
+            "readwrite"
+          );
+
+
+        const store =
+          transaction.objectStore(
+            VIDEO_STORE
+          );
+
+
+        store.delete(movieId);
+
+
+        transaction.oncomplete =
+          () => {
+
+            db.close();
+
+            resolve();
+
+          };
+
+
+        transaction.onerror =
+          () => {
+
+            db.close();
+
+            reject(
+              transaction.error
+            );
+
+          };
+
+      }
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+  }
+
+}
+
+
+/*
+==================================================
+GET MOVIES
+==================================================
+*/
+
+function getMovies(){
+
+  try{
+
+    return JSON.parse(
+      localStorage.getItem(
+        STORAGE_KEY
+      )
+    ) || [];
+
+  }catch(error){
+
+    console.error(error);
+
+    return [];
+
+  }
+
+}
+
+
+/*
+==================================================
+SAVE MOVIES
+==================================================
+*/
+
+function saveMovies(
+  movies
+){
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(movies)
+  );
+
+}
+
+
+/*
+==================================================
+MESSAGE
+==================================================
+*/
+
+function showMessage(
+  text,
+  type
+){
+
+  message.textContent =
+    text;
+
+  message.className =
+    "message " + type;
+
+
+  setTimeout(
+    () => {
+
+      message.className =
+        "message";
+
+    },
+    5000
+  );
+
+}
+
+
+/*
+==================================================
+ESCAPE HTML
+==================================================
+*/
+
+function escapeHTML(
+  text
+){
+
+  return String(
+    text || ""
+  )
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+  .replace(
+    /</g,
+    "&lt;"
+  )
+  .replace(
+    />/g,
+    "&gt;"
+  )
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+  .replace(
+    /'/g,
+    "&#039;"
+  );
+
+}
+
+
+/*
+==================================================
+FORMAT DATE
+==================================================
+*/
+
+function formatDate(
+  date
+){
+
+  if(!date){
+    return "TBA";
+  }
+
+
+  const d =
+    new Date(
+      date +
+      "T00:00:00"
+    );
+
+
+  if(isNaN(d)){
+    return date;
+  }
+
+
+  return d.toLocaleDateString(
+    "en-US",
+    {
+      month:"short",
+      day:"numeric",
+      year:"numeric"
+    }
+  );
+
+}
+
+
+/*
+==================================================
+READ POSTER
+==================================================
+*/
+
+function readPoster(
+  file
+){
+
+  return new Promise(
+    (resolve,reject) => {
+
+      if(!file){
+
+        resolve("");
+
+        return;
+
+      }
+
+
+      const reader =
+        new FileReader();
+
+
+      reader.onload =
+        event => {
+
+          resolve(
+            event.target.result
+          );
+
+        };
+
+
+      reader.onerror =
+        () => {
+
+          reject(
+            new Error(
+              "Could not read poster."
+            )
+          );
+
+        };
+
+
+      reader.readAsDataURL(
+        file
+      );
+
+    }
+  );
+
+}
+
+
+/*
+==================================================
+POSTER VALIDATION
+==================================================
+*/
+
+posterInput.addEventListener(
+  "change",
+  () => {
+
+    const file =
+      posterInput.files[0];
+
+
+    if(!file){
+      return;
+    }
+
+
+    if(
+      !file.type.startsWith(
+        "image/"
+      )
+    ){
+
+      showMessage(
+        "Please choose an image for the poster.",
+        "error"
+      );
+
+      posterInput.value = "";
+
+    }
+
+  }
+);
+
+
+/*
+==================================================
+VIDEO VALIDATION
+==================================================
+*/
+
+videoInput.addEventListener(
+  "change",
+  () => {
+
+    const file =
+      videoInput.files[0];
+
+
+    if(!file){
+      return;
+    }
+
+
+    if(
+      !file.type.startsWith(
+        "video/"
+      )
+    ){
+
+      showMessage(
+        "Please choose a valid video file.",
+        "error"
+      );
+
+      videoInput.value = "";
+
+      return;
+
+    }
+
+
+    /*
+      This is NOT converting the video.
+      It is simply showing its size.
+    */
+
+    const sizeMB =
+      (
+        file.size /
+        (1024 * 1024)
+      ).toFixed(1);
+
+
+    showMessage(
+      "Video selected: " +
+      sizeMB +
+      " MB. Ready to publish.",
+      "success"
+    );
+
+  }
+);
+
+
+/*
+==================================================
+PUBLISH MOVIE
+==================================================
+*/
+
+form.addEventListener(
+  "submit",
+  async event => {
+
+    event.preventDefault();
+
+
+    const title =
+      document
+        .getElementById(
+          "title"
+        )
+        .value
+        .trim();
+
+
+    if(!title){
+
+      showMessage(
+        "Please enter a movie title.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    const posterFile =
+      posterInput.files[0];
+
+
+    const videoFile =
+      videoInput.files[0];
+
+
+    publishBtn.disabled =
+      true;
+
+
+    publishBtn.textContent =
+      "Publishing...";
+
+
+    try{
+
+      /*
+        Read poster only.
+      */
+
+      const posterData =
+        await readPoster(
+          posterFile
+        );
+
+
+      /*
+        Create movie ID.
+      */
+
+      const movieId =
+        Date.now().toString() +
+        "-" +
+        Math.random()
+          .toString(36)
+          .slice(2);
+
+
+      /*
+        Create movie information.
+      */
+
+      const movie = {
+
+        id:movieId,
+
+        title:title,
+
+        genre:
+          document
+            .getElementById(
+              "genre"
+            )
+            .value,
+
+        releaseDate:
+          document
+            .getElementById(
+              "releaseDate"
+            )
+            .value,
+
+        runtime:
+          document
+            .getElementById(
+              "runtime"
+            )
+            .value,
+
+        rating:
+          document
+            .getElementById(
+              "rating"
+            )
+            .value,
+
+        poster:
+          posterData,
+
+        synopsis:
+          document
+            .getElementById(
+              "synopsis"
+            )
+            .value
+            .trim(),
+
+        hasVideo:
+          !!videoFile,
+
+        videoType:
+          videoFile
+          ? videoFile.type
+          : "",
+
+        posted:
+          Date.now()
+
+      };
+
+
+      /*
+        Save movie information.
+      */
+
+      const movies =
+        getMovies();
+
+
+      movies.push(
+        movie
+      );
+
+
+      saveMovies(
+        movies
+      );
+
+
+      /*
+        Save actual video
+        separately.
+      */
+
+      if(videoFile){
+
+        await saveVideo(
+          movieId,
+          videoFile
+        );
+
+      }
+
+
+      /*
+        Reset form.
+      */
+
+      form.reset();
+
+
+      /*
+        Show movie.
+      */
+
+      renderMovies();
+
+
+      showMessage(
+        videoFile
+        ? "Movie published successfully with video!"
+        : "Movie published successfully!",
+        "success"
+      );
+
+
+    }catch(error){
+
+      console.error(
+        "PUBLISH ERROR:",
+        error
+      );
+
+
+      showMessage(
+        "Publishing failed: " +
+        (
+          error.message ||
+          "Unknown error"
+        ),
+        "error"
+      );
+
+    }finally{
+
+      publishBtn.disabled =
+        false;
+
+      publishBtn.textContent =
+        "Publish Movie";
+
+    }
+
+  }
+);
+
+
+/*
+==================================================
+RENDER ADMIN MOVIES
+==================================================
+*/
+
+function renderMovies(){
+
+  const movies =
+    getMovies();
+
+
+  movieList.innerHTML =
+    "";
+
+
+  if(
+    movies.length === 0
+  ){
+
+    movieList.innerHTML =
+      `
+        <div class="empty">
+          No movies posted yet.
+        </div>
+      `;
+
+    return;
+
+  }
+
+
+  movies
+    .slice()
+    .reverse()
+    .forEach(
+      movie => {
+
+        const card =
+          document.createElement(
+            "div"
+          );
+
+
+        card.className =
+          "movie-card";
+
+
+        const poster =
+          movie.poster
+
+          ? `
+            <img
+              class="poster"
+              src="${movie.poster}"
+              alt="${escapeHTML(movie.title)} poster"
+            >
+          `
+
+          : `
+            <div class="poster-fallback">
+              ${escapeHTML(movie.title)}
+            </div>
+          `;
+
+
+        card.innerHTML = `
+
+          ${poster}
+
+          <div class="movie-info">
+
+            <h3>
+              ${escapeHTML(
+                movie.title
+              )}
+            </h3>
+
+            <div class="meta">
+
+              ${escapeHTML(
+                movie.genre
+              )}
+
+              ·
+
+              ${formatDate(
+                movie.releaseDate
+              )}
+
+              ${
+                movie.runtime
+                ? " · " +
+                  escapeHTML(
+                    movie.runtime
+                  ) +
+                  " min"
+                : ""
+              }
+
+              ${
+                movie.rating
+                ? " · ★ " +
+                  escapeHTML(
+                    movie.rating
+                  )
+                : ""
+              }
+
+            </div>
+
+            <div class="synopsis">
+
+              ${escapeHTML(
+                movie.synopsis ||
+                "No synopsis available."
+              )}
+
+            </div>
+
+            ${
+              movie.hasVideo
+
+              ? `
+                <div class="video-status">
+                  ✓ Video attached
+                </div>
+              `
+
+              : ""
+            }
+
+            <button
+              class="remove"
+              data-id="${movie.id}"
+            >
+              Remove Movie
+            </button>
+
+          </div>
+
+        `;
+
+
+        movieList.appendChild(
+          card
+        );
+
+      }
+    );
+
+
+  /*
+    Remove buttons.
+  */
+
+  document
+    .querySelectorAll(
+      ".remove"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          async () => {
+
+            const id =
+              button.dataset.id;
+
+
+            const movies =
+              getMovies()
+              .filter(
+                movie =>
+                  movie.id !== id
+              );
+
+
+            saveMovies(
+              movies
+            );
+
+
+            await deleteVideo(
+              id
+            );
+
+
+            renderMovies();
+
+
+            showMessage(
+              "Movie removed.",
+              "success"
+            );
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+/*
+==================================================
+CLEAR BUTTON
+==================================================
+*/
+
+document
+  .getElementById(
+    "clearBtn"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      form.reset();
+
+    }
+  );
+
+
+/*
+==================================================
+START
+==================================================
+*/
+
+renderMovies();
+
+</script>
+
+</body>
+
+</html>

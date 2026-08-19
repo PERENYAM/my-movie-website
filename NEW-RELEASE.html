@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>New Releases — Now Showing</title>
+
+<link
+  rel="preconnect"
+  href="https://fonts.googleapis.com"
+>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+  rel="stylesheet"
+>
+
+<style>
+
+:root{
+  --bg:#0B0F19;
+  --surface:#131A2C;
+  --surface-raised:#1A2338;
+  --gold:#E8B34C;
+  --red:#C1443C;
+  --text:#F1EDE4;
+  --text-muted:#8A93A8;
+  --hairline:#2A3450;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Work Sans',sans-serif;
+  line-height:1.5;
+}
+
+.wrap{
+  max-width:1080px;
+  margin:auto;
+  padding:0 24px 80px;
+}
+
+.marquee{
+  position:relative;
+  padding:56px 24px 40px;
+  text-align:center;
+  border-bottom:1px solid var(--hairline);
+  overflow:hidden;
+}
+
+.marquee::before,
+.marquee::after{
+  content:'';
+  position:absolute;
+  left:0;
+  right:0;
+  height:1px;
+  background:repeating-linear-gradient(
+    90deg,
+    var(--gold) 0 6px,
+    transparent 6px 16px
+  );
+  opacity:.55;
+}
+
+.marquee::before{
+  top:14px;
+}
+
+.marquee::after{
+  bottom:14px;
+}
+
+.bulbs{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.bulbs span{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--gold);
+  box-shadow:
+    0 0 6px 1px rgba(232,179,76,.7);
+}
+
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  letter-spacing:.28em;
+  font-size:11px;
+  color:var(--gold);
+  text-transform:uppercase;
+  margin:0 0 10px;
+}
+
+h1{
+  font-family:'Big Shoulders Display',sans-serif;
+  font-weight:900;
+  font-size:clamp(42px,9vw,84px);
+  margin:0;
+  text-transform:uppercase;
+  background:linear-gradient(
+    180deg,
+    #fff 0%,
+    var(--gold) 100%
+  );
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  line-height:.95;
+}
+
+.marquee p{
+  color:var(--text-muted);
+  max-width:500px;
+  margin:14px auto 0;
+}
+
+.nav{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  padding:24px 0;
+  flex-wrap:wrap;
+}
+
+.nav a{
+  text-decoration:none;
+  color:var(--text-muted);
+  border:1px solid var(--hairline);
+  padding:9px 16px;
+  border-radius:6px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+}
+
+.nav a:hover,
+.nav a.active{
+  color:#161008;
+  background:var(--gold);
+  border-color:var(--gold);
+}
+
+.filters{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:30px;
+}
+
+.filter{
+  background:transparent;
+  border:1px solid var(--hairline);
+  color:var(--text-muted);
+  padding:7px 14px;
+  border-radius:999px;
+  cursor:pointer;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+}
+
+.filter:hover,
+.filter.active{
+  color:#161008;
+  background:var(--gold);
+  border-color:var(--gold);
+}
+
+.movie-grid{
+  display:grid;
+  grid-template-columns:
+    repeat(auto-fill,minmax(280px,1fr));
+  gap:22px;
+}
+
+.movie-card{
+  background:var(--surface);
+  border:1px solid var(--hairline);
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.poster{
+  width:100%;
+  aspect-ratio:2/3;
+  object-fit:cover;
+  display:block;
+  background:var(--surface-raised);
+}
+
+.poster-fallback{
+  aspect-ratio:2/3;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    linear-gradient(
+      160deg,
+      var(--surface-raised),
+      var(--bg)
+    );
+  color:var(--hairline);
+  font-family:'Big Shoulders Display',sans-serif;
+  font-size:24px;
+  text-transform:uppercase;
+  text-align:center;
+  padding:20px;
+}
+
+.video-title{
+  padding:
+    14px
+    18px
+    8px;
+
+  color:var(--gold);
+
+  font-family:
+    'IBM Plex Mono',
+    monospace;
+
+  font-size:10px;
+
+  text-transform:uppercase;
+}
+
+.movie-video{
+  width:100%;
+  display:block;
+  background:#000;
+  max-height:520px;
+}
+
+.movie-info{
+  padding:18px;
+}
+
+.movie-info h2{
+  font-family:'Big Shoulders Display',sans-serif;
+  font-size:25px;
+  text-transform:uppercase;
+  margin:0 0 7px;
+}
+
+.genre{
+  display:inline-block;
+  background:rgba(193,68,60,.18);
+  color:#E88A83;
+  border:1px solid rgba(193,68,60,.4);
+  padding:3px 8px;
+  border-radius:4px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+
+.meta{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  color:var(--gold);
+  margin-bottom:12px;
+}
+
+.synopsis{
+  color:var(--text-muted);
+  font-size:13.5px;
+}
+
+.empty{
+  text-align:center;
+  color:var(--text-muted);
+  padding:70px 20px;
+  font-family:'IBM Plex Mono',monospace;
+}
+
+footer{
+  text-align:center;
+  color:var(--hairline);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  padding:50px 0 0;
+  text-transform:uppercase;
+}
+
+@media(max-width:600px){
+
+  .wrap{
+    padding-left:14px;
+    padding-right:14px;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<header class="marquee">
+
+  <div class="bulbs">
+
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+
+  </div>
+
+
+  <p class="eyebrow">
+    Reel updates, posted as they drop
+  </p>
+
+
+  <h1>
+    New Releases
+  </h1>
+
+
+  <p>
+    Discover the latest movies added to the marquee.
+  </p>
+
+</header>
+
+
+<div class="wrap">
+
+
+  <nav class="nav">
+
+    <a href="index.html">
+      Admin
+    </a>
+
+    <a
+      href="new-releases.html"
+      class="active"
+    >
+      New Releases
+    </a>
+
+  </nav>
+
+
+  <div
+    id="filters"
+    class="filters"
+  ></div>
+
+
+  <div
+    id="movieGrid"
+    class="movie-grid"
+  ></div>
+
+
+  <footer>
+    Now Showing · New Movie Releases
+  </footer>
+
+
+</div>
+
+
+<script>
+
+/*
+==================================================
+SETTINGS
+==================================================
+*/
+
+const STORAGE_KEY =
+  "movie_release_collection";
+
+
+const DB_NAME =
+  "MovieVideoDatabase";
+
+
+const DB_VERSION = 1;
+
+
+const VIDEO_STORE =
+  "videos";
+
+
+/*
+==================================================
+ELEMENTS
+==================================================
+*/
+
+const grid =
+  document.getElementById(
+    "movieGrid"
+  );
+
+
+const filters =
+  document.getElementById(
+    "filters"
+  );
+
+
+let activeGenre =
+  "All";
+
+
+/*
+==================================================
+OPEN INDEXEDDB
+==================================================
+*/
+
+function openVideoDB(){
+
+  return new Promise(
+    (resolve,reject) => {
+
+      const request =
+        indexedDB.open(
+          DB_NAME,
+          DB_VERSION
+        );
+
+
+      request.onupgradeneeded =
+        event => {
+
+          const db =
+            event.target.result;
+
+
+          if(
+            !db.objectStoreNames
+              .contains(VIDEO_STORE)
+          ){
+
+            db.createObjectStore(
+              VIDEO_STORE,
+              {
+                keyPath:"id"
+              }
+            );
+
+          }
+
+        };
+
+
+      request.onsuccess =
+        event => {
+
+          resolve(
+            event.target.result
+          );
+
+        };
+
+
+      request.onerror =
+        () => {
+
+          reject(
+            request.error
+          );
+
+        };
+
+    }
+  );
+
+}
+
+
+/*
+==================================================
+GET VIDEO
+==================================================
+*/
+
+async function getVideo(
+  movieId
+){
+
+  try{
+
+    const db =
+      await openVideoDB();
+
+
+    return new Promise(
+      (resolve,reject) => {
+
+        const transaction =
+          db.transaction(
+            VIDEO_STORE,
+            "readonly"
+          );
+
+
+        const store =
+          transaction.objectStore(
+            VIDEO_STORE
+          );
+
+
+        const request =
+          store.get(
+            movieId
+          );
+
+
+        request.onsuccess =
+          () => {
+
+            db.close();
+
+
+            if(
+              request.result &&
+              request.result.file
+            ){
+
+              const url =
+                URL.createObjectURL(
+                  request.result.file
+                );
+
+
+              resolve(url);
+
+            }else{
+
+              resolve(null);
+
+            }
+
+          };
+
+
+        request.onerror =
+          () => {
+
+            db.close();
+
+
+            reject(
+              request.error
+            );
+
+          };
+
+      }
+    );
+
+  }catch(error){
+
+    console.error(
+      "Could not load video:",
+      error
+    );
+
+    return null;
+
+  }
+
+}
+
+
+/*
+==================================================
+GET MOVIES
+==================================================
+*/
+
+function getMovies(){
+
+  try{
+
+    return JSON.parse(
+      localStorage.getItem(
+        STORAGE_KEY
+      )
+    ) || [];
+
+  }catch(error){
+
+    console.error(error);
+
+    return [];
+
+  }
+
+}
+
+
+/*
+==================================================
+ESCAPE HTML
+==================================================
+*/
+
+function escapeHTML(
+  text
+){
+
+  return String(
+    text || ""
+  )
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+  .replace(
+    /</g,
+    "&lt;"
+  )
+  .replace(
+    />/g,
+    "&gt;"
+  )
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+  .replace(
+    /'/g,
+    "&#039;"
+  );
+
+}
+
+
+/*
+==================================================
+FORMAT DATE
+==================================================
+*/
+
+function formatDate(
+  date
+){
+
+  if(!date){
+    return "TBA";
+  }
+
+
+  const d =
+    new Date(
+      date +
+      "T00:00:00"
+    );
+
+
+  if(isNaN(d)){
+    return date;
+  }
+
+
+  return d.toLocaleDateString(
+    "en-US",
+    {
+      month:"short",
+      day:"numeric",
+      year:"numeric"
+    }
+  );
+
+}
+
+
+/*
+==================================================
+RENDER FILTERS
+==================================================
+*/
+
+function renderFilters(){
+
+  const movies =
+    getMovies();
+
+
+  const genres = [
+
+    "All",
+
+    ...new Set(
+      movies
+        .map(
+          movie =>
+            movie.genre
+        )
+        .filter(Boolean)
+    )
+
+  ];
+
+
+  filters.innerHTML =
+    "";
+
+
+  genres.forEach(
+    genre => {
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.className =
+        "filter" +
+        (
+          genre === activeGenre
+          ? " active"
+          : ""
+        );
+
+
+      button.textContent =
+        genre;
+
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          activeGenre =
+            genre;
+
+
+          renderFilters();
+
+
+          renderMovies();
+
+        }
+      );
+
+
+      filters.appendChild(
+        button
+      );
+
+    }
+  );
+
+}
+
+
+/*
+==================================================
+RENDER MOVIES
+==================================================
+*/
+
+async function renderMovies(){
+
+  const movies =
+    getMovies();
+
+
+  const filtered =
+    movies.filter(
+      movie => {
+
+        return (
+          activeGenre === "All" ||
+          movie.genre === activeGenre
+        );
+
+      }
+    );
+
+
+  grid.innerHTML =
+    "";
+
+
+  if(
+    filtered.length === 0
+  ){
+
+    grid.innerHTML = `
+
+      <div class="empty">
+
+        No movie releases have
+        been posted yet.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  /*
+    Newest movies first.
+  */
+
+  filtered
+    .slice()
+    .sort(
+      (a,b) =>
+        (b.posted || 0) -
+        (a.posted || 0)
+    )
+    .forEach(
+      movie => {
+
+        const card =
+          document.createElement(
+            "article"
+          );
+
+
+        card.className =
+          "movie-card";
+
+
+        /*
+          POSTER
+        */
+
+        const poster =
+          movie.poster
+
+          ? `
+
+            <img
+              class="poster"
+              src="${movie.poster}"
+              alt="${escapeHTML(movie.title)} poster"
+            >
+
+          `
+
+          : `
+
+            <div class="poster-fallback">
+
+              ${escapeHTML(
+                movie.title
+              )}
+
+            </div>
+
+          `;
+
+
+        /*
+          CARD CONTENT
+        */
+
+        card.innerHTML = `
+
+          ${poster}
+
+
+          <div
+            class="video-area"
+          ></div>
+
+
+          <div class="movie-info">
+
+            <h2>
+              ${escapeHTML(
+                movie.title
+              )}
+            </h2>
+
+
+            <span class="genre">
+
+              ${escapeHTML(
+                movie.genre ||
+                "Unknown"
+              )}
+
+            </span>
+
+
+            <div class="meta">
+
+              Release:
+              ${formatDate(
+                movie.releaseDate
+              )}
+
+
+              ${
+                movie.runtime
+
+                ? " · " +
+                  escapeHTML(
+                    movie.runtime
+                  ) +
+                  " min"
+
+                : ""
+              }
+
+
+              ${
+                movie.rating
+
+                ? " · ★ " +
+                  escapeHTML(
+                    movie.rating
+                  )
+
+                : ""
+              }
+
+            </div>
+
+
+            <div class="synopsis">
+
+              ${
+                escapeHTML(
+                  movie.synopsis ||
+                  "No synopsis available."
+                )
+              }
+
+            </div>
+
+          </div>
+
+        `;
+
+
+        grid.appendChild(
+          card
+        );
+
+
+        /*
+          VIDEO
+        */
+
+        if(
+          movie.hasVideo
+        ){
+
+          getVideo(
+            movie.id
+          )
+          .then(
+            videoURL => {
+
+              if(!videoURL){
+                return;
+              }
+
+
+              const videoArea =
+                card.querySelector(
+                  ".video-area"
+                );
+
+
+              videoArea.innerHTML = `
+
+                <div class="video-title">
+
+                  Watch Movie
+
+                </div>
+
+
+                <video
+                  class="movie-video"
+                  controls
+                  preload="metadata"
+                  poster="${
+                    movie.poster || ""
+                  }"
+                >
+
+                  <source
+                    src="${videoURL}"
+                    type="${
+                      movie.videoType ||
+                      "video/mp4"
+                    }"
+                  >
+
+                  Your browser does not
+                  support video playback.
+
+                </video>
+
+              `;
+
+            }
+          )
+          .catch(
+            error => {
+
+              console.error(
+                error
+              );
+
+            }
+          );
+
+        }
+
+      }
+    );
+
+}
+
+
+/*
+==================================================
+START
+==================================================
+*/
+
+renderFilters();
+
+renderMovies();
+
+</script>
+
+</body>
+
+</html>
