@@ -179,6 +179,8 @@ export default {
  * PUBLIC MOVIES API
  */
 if (url.pathname === "/api/movies" && request.method === "GET") {
+  return new Response("API WORKER IS RUNNING");
+  
   const result = await env.DB.prepare(
     "SELECT * FROM movies ORDER BY created_at DESC"
   ).all();
