@@ -1391,18 +1391,30 @@ form.addEventListener(
         Save movie information.
       */
 
-      const movies =
-        getMovies();
+      const response = await fetch("/api/movies", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    title: movie.title,
+    description: movie.description,
+    genre: movie.genre,
+    release_date: movie.releaseDate,
+    runtime: movie.runtime,
+    rating: movie.rating,
+    video_url: "",
+    poster_url: movie.poster || ""
+  })
+});
 
+if (!response.ok) {
+  throw new Error("Could not publish movie.");
+}
 
-      movies.push(
-        movie
-      );
+const result = await response.json();
 
-
-      saveMovies(
-        movies
-      );
+console.log("Movie published to D1:", result);
 
 
       /*
