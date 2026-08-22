@@ -175,7 +175,21 @@ export default {
         }
       });
     }
+/*
+ * PUBLIC MOVIES API
+ */
+if (url.pathname === "/api/movies" && request.method === "GET") {
+  const result = await env.DB.prepare(
+    "SELECT * FROM movies ORDER BY created_at DESC"
+  ).all();
 
+  return new Response(JSON.stringify(result.results), {
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store"
+    }
+  });
+}
     /*
      * EVERYTHING ELSE
      */
