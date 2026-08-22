@@ -190,6 +190,48 @@ if (url.pathname === "/api/movies" && request.method === "GET") {
     }
   });
 }
+    if (url.pathname === "/api/movies" && request.method === "POST") {
+  const authenticated = await validSession(
+    request,
+    env.ADMIN_PASSWORD,
+    env.ADMIN_USERNAME
+  );
+
+  if (!authenticated) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
+  const movie = await request.json();
+
+  const result = await env.DB.prepare(`
+    INSERT INTO movies (
+      title,
+      description,
+      video_url,
+      poster_url
+    )
+    VALUES (?, ?, ?, ?)
+  `)
+    .bind(
+      movie.title || "",
+      movie.description || "",
+      movie.video_url || "",
+      movie.poster_url || ""
+    )
+    .run();
+
+  return new Response(
+    JSON.stringify({
+      success: true,
+      id: result.meta.last_row_id
+    }),
+    {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+  );
+}
     /*
      * EVERYTHING ELSE
      */
