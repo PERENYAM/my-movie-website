@@ -240,6 +240,52 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     }
   );
 }
+    if (url.pathname === "/api/movies" && request.method === "DELETE") {
+  const authenticated = await validSession(
+    request,
+    env.ADMIN_PASSWORD,
+    env.ADMIN_USERNAME
+  );
+
+  if (!authenticated) {
+    return new Response("Unauthorized", {
+      status: 401
+    });
+  }
+
+  const body = await request.json();
+  const movieId = body.id;
+
+  if (!movieId) {
+    return new Response(
+      JSON.stringify({
+        success: false,
+        error: "Movie ID is required."
+      }),
+      {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
+  }
+
+  await env.DB.prepare(
+    "DELETE FROM movies WHERE id = ?"
+  ).bind(movieId).run();
+
+  return new Response(
+    JSON.stringify({
+      success: true
+    }),
+    {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+  );
+}
     /*
      * EVERYTHING ELSE
      */
