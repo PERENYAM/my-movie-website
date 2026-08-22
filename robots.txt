@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://my-movie-website.nguwenezaheritier250.workers.dev/sitemap.xml
+Sitemap: https://nyamu.filmsz.workers.dev/sitemap.xml
