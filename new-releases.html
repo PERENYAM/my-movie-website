@@ -972,80 +972,39 @@ async function renderMovies(){
           VIDEO
         */
 
-        if(
-          movie.hasVideo
-        ){
+if(movie.video_url){
 
-          getVideo(
-            movie.id
-          )
-          .then(
-            videoURL => {
-
-              if(!videoURL){
-                return;
-              }
-
-
-              const videoArea =
-                card.querySelector(
-                  ".video-area"
-                );
-
-
-              videoArea.innerHTML = `
-
-                <div class="video-title">
-
-                  Watch Movie
-
-                </div>
-
-
-                <video
-                  class="movie-video"
-                  controls
-                  preload="metadata"
-                  poster="${
-                    movie.poster || ""
-                  }"
-                >
-
-                  <source
-                    src="${videoURL}"
-                    type="${
-                      movie.videoType ||
-                      "video/mp4"
-                    }"
-                  >
-
-                  Your browser does not
-                  support video playback.
-
-                </video>
-
-              `;
-
-            }
-          )
-          .catch(
-            error => {
-
-              console.error(
-                error
-              );
-
-            }
-          );
-
-        }
-
-      }
+  const videoArea =
+    card.querySelector(
+      ".video-area"
     );
 
+  videoArea.innerHTML = `
+
+    <div class="video-title">
+      Watch Movie
+    </div>
+
+    <video
+      class="movie-video"
+      controls
+      preload="metadata"
+      poster="${movie.poster_url || ""}"
+    >
+
+      <source
+        src="${movie.video_url}"
+        type="${movie.videoType || "video/mp4"}"
+      >
+
+      Your browser does not
+      support video playback.
+
+    </video>
+
+  `;
+
 }
-
-
 /*
 ==================================================
 START
