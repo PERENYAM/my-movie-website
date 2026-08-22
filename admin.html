@@ -1584,22 +1584,32 @@ const movies =
               button.dataset.id;
 
 
-            const movies =
-              getMovies()
-              .filter(
-                movie =>
-                  movie.id !== id
-              );
+            const response =
+  await fetch(
+    "/api/movies",
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        id: id
+      })
+    }
+  );
 
+if (!response.ok) {
+  throw new Error(
+    "Could not delete movie."
+  );
+}
 
-            saveMovies(
-              movies
-            );
+await renderMovies();
 
-
-            await deleteVideo(
-              id
-            );
+showMessage(
+  "Movie removed.",
+  "success"
+);
 
 
             renderMovies();
