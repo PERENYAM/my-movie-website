@@ -205,19 +205,27 @@ if (url.pathname === "/api/movies" && request.method === "GET") {
 
   const result = await env.DB.prepare(`
     INSERT INTO movies (
-      title,
-      description,
-      video_url,
-      poster_url
-    )
-    VALUES (?, ?, ?, ?)
+  title,
+  description,
+  genre,
+  release_date,
+  runtime,
+  rating,
+  video_url,
+  poster_url
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `)
     .bind(
-      movie.title || "",
-      movie.description || "",
-      movie.video_url || "",
-      movie.poster_url || ""
-    )
+  movie.title || "",
+  movie.description || "",
+  movie.genre || "",
+  movie.release_date || "",
+  movie.runtime || "",
+  movie.rating || "",
+  movie.video_url || "",
+  movie.poster_url || ""
+)
     .run();
 
   return new Response(
