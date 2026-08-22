@@ -3,14 +3,23 @@
   "name": "my-movie-website",
   "main": "_worker.js",
   "compatibility_date": "2026-08-22",
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "movie-website-db",
+      "database_id": "6e8cba7e-92e1-441f-9699-a6d258ee898d"
+    }
+  ],
+
   "assets": {
     "directory": ".",
     "binding": "ASSETS",
     "run_worker_first": [
-  "/admin.html",
-  "/admin-login.html",
-  "/admin-logout",
-  "/api/*"
-]
+      "/admin.html",
+      "/admin-login.html",
+      "/admin-logout",
+      "/api/*"
+    ]
   }
 }
