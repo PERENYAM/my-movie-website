@@ -599,9 +599,9 @@ button{
         </label>
 
         <input
-          id="video"
-          type="file"
-          accept="video/mp4,video/webm,video/ogg"
+         id="video"
+         type="url"
+         placeholder="Paste ImageKit video URL"
         >
 
         <div class="video-note">
@@ -807,72 +807,6 @@ function openVideoDB(){
 SAVE VIDEO
 ==================================================
 */
-
-async function saveVideo(
-  movieId,
-  videoFile
-){
-
-  if(!videoFile){
-    return;
-  }
-
-
-  const db =
-    await openVideoDB();
-
-
-  return new Promise(
-    (resolve,reject) => {
-
-      const transaction =
-        db.transaction(
-          VIDEO_STORE,
-          "readwrite"
-        );
-
-
-      const store =
-        transaction.objectStore(
-          VIDEO_STORE
-        );
-
-
-      store.put({
-
-        id:movieId,
-
-        file:videoFile
-
-      });
-
-
-      transaction.oncomplete =
-        () => {
-
-          db.close();
-
-          resolve();
-
-        };
-
-
-      transaction.onerror =
-        () => {
-
-          db.close();
-
-          reject(
-            transaction.error
-          );
-
-        };
-
-    }
-  );
-
-}
-
 
 /*
 ==================================================
@@ -1284,8 +1218,8 @@ form.addEventListener(
       posterInput.files[0];
 
 
-    const videoFile =
-      videoInput.files[0];
+    const videoURL =
+  videoInput.value.trim();
 
 
     publishBtn.disabled =
@@ -1370,12 +1304,10 @@ form.addEventListener(
             .trim(),
 
         hasVideo:
-          !!videoFile,
+         !!videoURL,
 
         videoType:
-          videoFile
-          ? videoFile.type
-          : "",
+          "video/mp4",
 
         posted:
           Date.now()
@@ -1399,7 +1331,7 @@ form.addEventListener(
     release_date: movie.releaseDate,
     runtime: movie.runtime,
     rating: movie.rating,
-    video_url: "",
+    video_url: videoURL || "",
     poster_url: posterData || ""
   })
 });
@@ -1418,14 +1350,14 @@ console.log("Movie published to D1:", result);
         separately.
       */
 
-      if(videoFile){
+      if(videoURL){
 
-        await saveVideo(
-          movieId,
-          videoFile
-        );
+  console.log(
+    "ImageKit video URL:",
+    videoURL
+  );
 
-      }
+}
 
 
       /*
@@ -1443,7 +1375,7 @@ console.log("Movie published to D1:", result);
 
 
       showMessage(
-        videoFile
+        videoURL
         ? "Movie published successfully with video!"
         : "Movie published successfully!",
         "success"
