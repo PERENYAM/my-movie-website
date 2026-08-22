@@ -9,7 +9,8 @@
     "run_worker_first": [
   "/admin.html",
   "/admin-login.html",
-  "/admin-logout"
+  "/admin-logout",
+  "/api/movies
 ]
   }
 }
