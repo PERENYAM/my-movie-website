@@ -854,13 +854,13 @@ async function renderMovies(){
         */
 
         const poster =
-          movie.poster
+          movie.poster_url
 
           ? `
 
             <img
               class="poster"
-              src="${movie.poster}"
+              src="${movie.poster_url}"
               alt="${escapeHTML(movie.title)} poster"
             >
 
