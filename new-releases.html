@@ -602,24 +602,20 @@ GET MOVIES
 ==================================================
 */
 
-function getMovies(){
+async function getMovies() {
+  try {
+    const response = await fetch("/api/movies");
 
-  try{
+    if (!response.ok) {
+      throw new Error("Could not load movies.");
+    }
 
-    return JSON.parse(
-      localStorage.getItem(
-        STORAGE_KEY
-      )
-    ) || [];
+    return await response.json();
 
-  }catch(error){
-
+  } catch (error) {
     console.error(error);
-
     return [];
-
   }
-
 }
 
 
@@ -705,10 +701,10 @@ RENDER FILTERS
 ==================================================
 */
 
-function renderFilters(){
+async function renderFilters(){
 
   const movies =
-    getMovies();
+  await getMovies();
 
 
   const genres = [
@@ -789,7 +785,7 @@ RENDER MOVIES
 async function renderMovies(){
 
   const movies =
-    getMovies();
+  await getMovies();
 
 
   const filtered =
