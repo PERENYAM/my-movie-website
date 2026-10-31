@@ -250,6 +250,17 @@ h1{
   max-height: none;
   object-fit: contain;
 }
+.player-shell {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: #0B0F19;
+  overflow: hidden;
+}
+
+.player-shell.is-playing {
+  aspect-ratio: 16 / 9;
+}
 
 .movie-info{
   padding:18px;
@@ -1135,10 +1146,7 @@ playerHTML = `
     Watch Movie
   </div>
 
-  <div
-    class="player-shell"
-    style="position:relative;width:100%;aspect-ratio:2/3;background:#0B0F19;overflow:hidden;"
-  >
+ <div class="player-shell">
     <button
       type="button"
       class="poster-play"
@@ -1176,7 +1184,7 @@ posterButton.addEventListener("click", () => {
   const playerShell = videoArea.querySelector(".player-shell");
 
   if (playerShell) {
-  playerShell.style.aspectRatio = "16 / 9";
+  playerShell.classList.add("is-playing");
   playerShell.innerHTML = playerHTML;
 }
 });
