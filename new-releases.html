@@ -250,12 +250,20 @@ h1{
 }
 .player-shell {
   position: relative;
-  width: 100%;
+  width: 80%;
+  max-width: 260px;
+  margin: 0 auto;
   aspect-ratio: 3 / 4;
   background: #0B0F19;
   overflow: hidden;
 }
 
+.player-shell.is-playing {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  aspect-ratio: 16 / 9;
+}
 .player-shell.is-playing {
   aspect-ratio: 16 / 9;
 }
