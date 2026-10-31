@@ -972,12 +972,45 @@ async function renderMovies(){
           VIDEO
         */
 
-if(movie.video_url){
+if (movie.video_url) {
 
-  const videoArea =
-    card.querySelector(
-      ".video-area"
-    );
+  const videoArea = card.querySelector(".video-area");
+  const videoUrl = String(movie.video_url).trim();
+
+  let youtubeId = "";
+
+  try {
+    const parsedUrl = new URL(videoUrl);
+    const host = parsedUrl.hostname.toLowerCase();
+
+    if (host === "youtu.be" || host === "www.youtu.be") {
+      youtubeId = parsedUrl.pathname.split("/").filter(Boolean)[0] || "";
+    } 
+    else if (
+      host === "youtube.com" ||
+      host === "www.youtube.com" ||
+      host === "m.youtube.com"
+    ) {
+      youtubeId = parsedUrl.searchParams.get("v") || "";
+
+      if (!youtubeId) {
+        const parts = parsedUrl.pathname.split("/").filter(Boolean);
+
+        if (["embed", "shorts", "live"].includes(parts[0])) {
+          youtubeId = parts[1] || "";
+        }
+      }
+    }
+  } catch (error) {
+    youtubeId = "";
+  }
+
+  const allowedCharacters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-";
+
+  const validYoutubeId =
+    youtubeId.length === 11 &&
+    [...youtubeId].every(char => allowedCharacters.includes(char));
 
   videoArea.innerHTML = `
 
@@ -985,22 +1018,35 @@ if(movie.video_url){
       Watch Movie
     </div>
 
-    <video
-      class="movie-video"
-      controls
-      preload="metadata"
-      poster="${movie.poster_url || ""}"
-    >
-
-      <source
-        src="${movie.video_url}"
-        type="${movie.videoType || "video/mp4"}"
-      >
-
-      Your browser does not
-      support video playback.
-
-    </video>
+    ${
+      validYoutubeId
+        ? `
+          <iframe
+            class="movie-video"
+            width="560"
+            height="315"
+            src="${"https:" + "//www.youtube-nocookie.com/embed/" + youtubeId}"
+            title="YouTube video player"
+            style="width:100%;aspect-ratio:16/9;border:0;"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        `
+        : `
+          <video
+            class="movie-video"
+            controls
+            preload="metadata"
+            poster="${movie.poster_url || ""}"
+          >
+            <source
+              src="${videoUrl}"
+              type="${movie.videoType || "video/mp4"}"
+            >
+            Your browser does not support video playback.
+          </video>
+        `
+    }
 
   `;
 
