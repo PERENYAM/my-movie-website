@@ -1137,7 +1137,7 @@ playerHTML = `
 
   <div
     class="player-shell"
-    style="position:relative;width:100%;aspect-ratio:16/9;background:#0B0F19;overflow:hidden;"
+    style="position:relative;width:100%;aspect-ratio:2/3;background:#0B0F19;overflow:hidden;"
   >
     <button
       type="button"
@@ -1151,7 +1151,7 @@ playerHTML = `
             <img
               src="${escapeHTML(movie.poster_url)}"
               alt="${escapeHTML(movie.title)} poster"
-              style="width:100%;height:100%;object-fit:contain;display:block;background:#000;"
+              style="width:100%;height:100%;object-fit:cover;display:block;background:#000;"
             >
           `
           : `
@@ -1176,8 +1176,9 @@ posterButton.addEventListener("click", () => {
   const playerShell = videoArea.querySelector(".player-shell");
 
   if (playerShell) {
-    playerShell.innerHTML = playerHTML;
-  }
+  playerShell.style.aspectRatio = "16 / 9";
+  playerShell.innerHTML = playerHTML;
+}
 });
 
 }
