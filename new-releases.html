@@ -242,11 +242,13 @@ h1{
   text-transform:uppercase;
 }
 
-.movie-video{
-  width:100%;
-  display:block;
-  background:#000;
-  max-height:520px;
+.movie-video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: #000;
+  max-height: none;
+  object-fit: contain;
 }
 
 .movie-info{
@@ -1151,7 +1153,7 @@ if (movie.video_url) {
             <img
               src="${escapeHTML(movie.poster_url)}"
               alt="${escapeHTML(movie.title)} poster"
-              style="width:100%;height:100%;object-fit:cover;display:block;"
+              style="width:100%;height:100%;object-fit:contain;display:block;background:#000;"
             >
           `
           : `
