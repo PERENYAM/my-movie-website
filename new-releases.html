@@ -1078,25 +1078,27 @@ if (movie.video_url) {
 
   else if (validYoutubeId) {
 
-    const youtubePlayerUrl = new URL(
-      "/embed/" + youtubeId,
-      youtubeOrigin
-    ).href;
+  const youtubePlayerUrl = new URL(
+    "/embed/" + youtubeId,
+    youtubeOrigin
+  );
 
-    playerHTML = `
-      <iframe
-        class="movie-video"
-        width="560"
-        height="315"
-        src="${youtubePlayerUrl}"
-        title="YouTube video player"
-        style="width:100%;aspect-ratio:16/9;border:0;"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-      ></iframe>
-    `;
+  youtubePlayerUrl.searchParams.set("controls", "1");
+  youtubePlayerUrl.searchParams.set("fs", "1");
+  youtubePlayerUrl.searchParams.set("playsinline", "1");
 
-  }
+  playerHTML = `
+    <iframe
+      class="movie-video"
+      src="${youtubePlayerUrl.href}"
+      title="YouTube video player"
+      style="position:absolute;inset:0;width:100%;height:100%;border:0;display:block;"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+      allowfullscreen
+    ></iframe>
+  `;
+
+}
 
   else {
 
